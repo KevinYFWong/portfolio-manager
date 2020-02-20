@@ -33,6 +33,7 @@ export default class FileModal extends Component<FileModalProps> {
 
 	render() {
 		return <Modal
+			width="auto"
 			centered
 			visible={this.props.visibility()}
 			title={this.props.title}

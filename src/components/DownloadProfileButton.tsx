@@ -1,16 +1,13 @@
 import React, { Component } from "react";
-import { ProfileStore } from "../stores/ProfileStore";
-import { Button, Tooltip, message } from "antd";
-import { observable } from "mobx";
+import { Button, message } from "antd";
+import RootStore from "../stores/RootStore";
 
 interface Props {
-	ps: ProfileStore;
+	rs: RootStore;
 	whenDone: () => void;
 }
 
 export default class DownloadProfileButton extends Component<Props, {}>{
-	@observable visible: boolean = false;
-
 	public static defaultProps = {
 		whenDone: () => ({})
 	};
@@ -18,7 +15,7 @@ export default class DownloadProfileButton extends Component<Props, {}>{
 	render() {
 		const onClick = () => {
 			this.props.whenDone();
-			const psData = this.props.ps.export();
+			const psData = this.props.rs.ps.export();
 			if (psData) {
 				const dataStr = "data:text/json;charset=utf-8," +
 					encodeURIComponent(JSON.stringify(psData));
@@ -33,17 +30,15 @@ export default class DownloadProfileButton extends Component<Props, {}>{
 			}
 		}
 		return <div style={{ padding: 0 }}>
-			<Tooltip title="Export your profile to JSON" placement="bottom">
-				<Button
-					onClick={onClick}
-					icon="download"
-					type="primary"
-					size="large"
-					style={{margin: 0}}
-				>
-					Download
-				</Button>
-			</Tooltip>
+			<Button
+				onClick={onClick}
+				icon="download"
+				type="primary"
+				size="large"
+				style={{margin: 0}}
+			>
+				Download your profile
+			</Button>
 		</div>
 	}
 }

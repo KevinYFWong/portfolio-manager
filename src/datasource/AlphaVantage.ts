@@ -6,6 +6,7 @@ import axios, { AxiosRequestConfig, AxiosPromise } from 'axios';
 export default class AlphaVantage implements DataSource {
 	private readonly baseURL: string = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=";
 	private readonly apiKey: string = "xxxxxxxxxx";
+	readonly name: string = "Alpha Vantage";
 
 	private quoteURL(ticker: Ticker): string {
 		return this.baseURL + `${ticker.exchange}:${ticker.symbol}&apikey=${this.apiKey}`;

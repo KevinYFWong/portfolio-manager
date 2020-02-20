@@ -1,13 +1,13 @@
 import { Ticker } from "../model/Ticker";
 import Quote from "../model/Quote";
-import DataSource from "../datasource/DataSource";
+import DataSource, { defaultSources } from "../datasource/DataSource";
 
 
 export default class QuoteStore {
 	private quotes: Map<Ticker, Quote> = new Map();
 	private sources: DataSource[];
 
-	constructor(sources: DataSource[]) {
+	constructor(sources: DataSource[] = defaultSources) {
 		this.sources = sources;
 	}
 

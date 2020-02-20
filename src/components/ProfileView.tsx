@@ -1,51 +1,66 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import { Popover, Button, Icon } from "antd";
-import { ProfileStore } from "../stores/ProfileStore";
-import ImportJSONButton from "./ImportJSONButton";
-import { observable } from "mobx";
-import DownloadProfileButton from "./DownloadProfileButton";
+import RootStore from "../stores/RootStore";
 
 
 @observer
-export default class ProfileView extends Component<{ps: ProfileStore}> {
-	@observable private shown: boolean = false;
+export default class ProfileView extends Component<{rs: RootStore}> {
 	render() {
-		const hide = () => this.shown = false;
-		const content = (
-		<div
-			style={{textAlign: "center"}}
-			// actions={[
-			// 	<Icon type="edit" key="edit"></Icon>,
-				// <ImportJSONButton
-				// 	ps={this.props.ps}
-				// 	whenDone={() => this.shown = false}
-				// ></ImportJSONButton>,
-			// 	<Icon type="download" key="download"></Icon>
-			// ]}
-		>
-			<ImportJSONButton
-				ps={this.props.ps}
-				whenDone={hide}
-			></ImportJSONButton>
+		const popover = (
+		<div style={{textAlign: "center"}}>
+			<Button
+				type="primary"
+				style={{width: "auto", margin: 10}}
+				size="large"
+				icon="edit"
+				onClick={() => {
+					this.props.rs.us.profileVisible = false;
+					this.props.rs.us.profileModalVisible = true;
+				}}
+			>
+				Edit Profile
+			</Button>
 			<br/>
-			<DownloadProfileButton ps={this.props.ps} whenDone={hide}/>
-
+			<Button
+				type="primary"
+				style={{width: 100, margin: 10}}
+				size="large"
+				icon="import"
+				onClick={() => {
+					this.props.rs.us.profileVisible = false;
+					this.props.rs.us.loadModalVisible = true;
+				}}
+			>
+				Load
+			</Button>
+			<Button
+				type="primary"
+				style={{width: 100, margin: 10}}
+				size="large"
+				icon="import"
+				onClick={() => {
+					this.props.rs.us.profileVisible = false;
+					this.props.rs.us.exportModalVisible = true;
+				}}
+			>
+				Export
+			</Button>
 		</div>
 		);
 
 		return <Popover
-			content={content}
+			content={popover}
 			trigger="click"
-			visible={this.shown}
-			onVisibleChange={v => this.shown = v}
+			visible={this.props.rs.us.profileVisible}
+			onVisibleChange={v => this.props.rs.us.profileVisible = v}
 			placement="topLeft"
 			title="Profile Settings"
 		>
-			<div onClick={() => this.shown = true}>
+			<div onClick={() => this.props.rs.us.profileVisible = true}>
 				<Button>
 					<Icon type="profile"></Icon>
-					Profile - {this.props.ps.name}
+					Profile - {this.props.rs.ps.name}
 				</Button>
 			</div>
 		</Popover>

@@ -1,17 +1,14 @@
 import React, { Component } from "react";
-import { ProfileStore } from "../stores/ProfileStore";
-import { Button, message, Tooltip } from "antd";
-import { observable } from "mobx";
+import { Button, message } from "antd";
 import FileModal from "./FileModal";
+import RootStore from "../stores/RootStore";
 
 interface Props {
-	ps: ProfileStore;
+	rs: RootStore;
 	whenDone: () => void;
 }
 
 export default class ImportJSONButton extends Component<Props, {}>{
-	@observable visible: boolean = false;
-
 	public static defaultProps = {
 		whenDone: () => ({})
 	};
@@ -23,7 +20,7 @@ export default class ImportJSONButton extends Component<Props, {}>{
 	}
 
 	handleFile(file: File) {
-		this.props.ps.load(file, (success: boolean) => {
+		this.props.rs.ps.load(file, (success: boolean) => {
 			success ?
 				message.success("Successfully loaded profile.") :
 				message.error("Profile could not loaded.");
@@ -31,27 +28,25 @@ export default class ImportJSONButton extends Component<Props, {}>{
 	}
 
 	visibility(v?: boolean): boolean {
-		if (v !== undefined) this.visible = v;
-		return this.visible;
+		if (v !== undefined) this.props.rs.us.importFromJsonModalVisible = v;
+		return this.props.rs.us.importFromJsonModalVisible;
 	}
 
 	render() {
 		const onClick = () => {
-			this.visible = true;
+			this.props.rs.us.importFromJsonModalVisible = true;
 			this.props.whenDone();
 		}
 		return <div style={{ padding: 0 }}>
-			<Tooltip title="Import a profile from JSON" placement="bottom">
-				<Button
-					onClick={onClick}
-					icon="import"
-					type="primary"
-					size="large"
-					style={{margin: 0}}
-				>
-					Import
-				</Button>
-			</Tooltip>
+			<Button
+				onClick={onClick}
+				icon="import"
+				type="primary"
+				size="large"
+				style={{margin: 0}}
+			>
+				Import a profile from file
+			</Button>
 			<FileModal
 				handleFile={this.handleFile}
 				visibility={this.visibility}
