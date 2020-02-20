@@ -3,15 +3,16 @@ import { computed, observable } from "mobx";
 import shortid from "shortid";
 import AssetAllocation from "./AssetAllocation";
 import Transfer from "./Transfer";
+import { primitive, list, object, serializable } from "serializr";
 
 
 export class Account {
-	@observable name: string = "";
-	@observable transactions: Transaction[] = [];
-	@observable transfers: Transfer[] = [];
-	@observable balance: number = 0;
-	@observable assetAllocation: AssetAllocation[] = [];
-	readonly id: string;
+	@observable @serializable(primitive()) name: string = "";
+	@observable @serializable(list(object(Transaction))) transactions: Transaction[] = [];
+	@observable @serializable(list(object(Transfer))) transfers: Transfer[] = [];
+	@observable @serializable(primitive()) balance: number = 0;
+	@observable @serializable(list(object(AssetAllocation))) assetAllocation: AssetAllocation[] = [];
+	@serializable(primitive()) readonly id: string;
 
 	@computed get currentValue(): number {
 		return this.transactions.reduce((acc: number, t: Transaction) => t.value + acc, 0);
