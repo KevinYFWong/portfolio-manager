@@ -35,16 +35,17 @@ class EditTransferModal extends Component<Props & FormComponentProps> {
 		const us = this.props.rs.us;
 		const value = this.props.form.getFieldValue("value");
 		const date = this.props.form.getFieldValue("date") as Moment;
+		const acc = this.props.rs.ps.accounts.get(us.selectedAccount) as Account;
 		if (this.props.rs.us.currentTransfer) {
 			this.props.rs.us.currentTransfer.value = value;
 			this.props.rs.us.currentTransfer.date = date.toDate();
 		} else {
-			const acc = this.props.rs.ps.accounts.get(us.selectedAccount) as Account;
 			if (acc) {
 				acc.transfers.push(new Transfer(value, date.toDate(), shortid.generate()));
 			}
 		}
 		this.onCancel();
+		acc.sortTransfers();
 	}
 
 	prepNewAccount() {

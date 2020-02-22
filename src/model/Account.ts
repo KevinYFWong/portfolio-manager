@@ -1,5 +1,5 @@
 import { Transaction } from "./Transaction";
-import { computed, observable } from "mobx";
+import { computed, observable, IObservableArray } from "mobx";
 import AssetAllocation from "./AssetAllocation";
 import Transfer from "./Transfer";
 import { primitive, list, object, serializable } from "serializr";
@@ -8,7 +8,7 @@ import { primitive, list, object, serializable } from "serializr";
 export class Account {
 	@observable @serializable(primitive()) name: string = "";
 	@observable @serializable(list(object(Transaction))) transactions: Transaction[];
-	@observable @serializable(list(object(Transfer))) transfers: Transfer[];
+	@serializable(list(object(Transfer))) transfers: IObservableArray<Transfer>;
 	@observable @serializable(primitive()) balance: number = 0;
 	@observable @serializable(list(object(AssetAllocation))) assetAllocation: AssetAllocation[] = [];
 	@serializable(primitive()) readonly id: string;
@@ -24,8 +24,14 @@ export class Account {
 	constructor(name: string, transactions: Transaction[], transfers: Transfer[], balance: number, id: string) {
 		this.name = name;
 		this.transactions = transactions;
-		this.transfers = transfers;
+		this.transfers = observable.array<Transfer>(transfers);
 		this.balance = balance;
 		this.id = id;
+	}
+
+	sortTransfers() {
+		this.transfers.replace(this.transfers.slice().sort(
+			(a: Transfer, b: Transfer) => a.date.getTime() - b.date.getTime()
+		));
 	}
 }
