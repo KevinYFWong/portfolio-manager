@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button, message } from "antd";
-import RootStore from "../stores/RootStore";
+import RootStore from "../../stores/RootStore";
 
 interface Props {
 	rs: RootStore;

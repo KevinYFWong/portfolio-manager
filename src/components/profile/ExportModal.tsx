@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import RootStore from "../stores/RootStore";
+import RootStore from "../../stores/RootStore";
 import { Modal } from "antd";
 import React from "react";
 import DownloadProfileButton from "./DownloadProfileButton";

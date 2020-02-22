@@ -1,6 +1,5 @@
 import { observable, computed } from "mobx"
 import { Ticker } from "./Ticker";
-import shortid from "shortid";
 import { object, primitive, serializable } from "serializr";
 
 export class Transaction {
@@ -13,7 +12,7 @@ export class Transaction {
 		return this.unitPrice * this.quantity;
 	}
 
-	constructor(ticker: Ticker, quantity: number, price: number, id: string = shortid.generate()) {
+	constructor(ticker: Ticker, quantity: number, price: number, id: string) {
 		this.ticker = ticker;
 		this.quantity = quantity;
 		this.unitPrice = price;

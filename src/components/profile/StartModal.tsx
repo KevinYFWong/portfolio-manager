@@ -1,5 +1,5 @@
 import React from "react";
-import RootStore from "../stores/RootStore";
+import RootStore from "../../stores/RootStore";
 import { Modal, Button } from "antd";
 import { observer } from "mobx-react";
 
@@ -11,7 +11,6 @@ export const StartModal = observer((props: {rs: RootStore}) => (<Modal
 		onCancel={() => props.rs.us.startModalVisible = false}
 		footer={null}
 		zIndex={1090}
-		maskClosable={false}
 		width="auto"
 	>
 		<Button

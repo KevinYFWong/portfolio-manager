@@ -1,6 +1,7 @@
-import { observable } from "mobx";
+import { observable, ObservableMap } from "mobx";
 import { Account } from "../model/Account";
-import { serialize, list, object, primitive, deserialize, serializable } from "serializr";
+import { serialize, object, primitive, deserialize, serializable, mapAsArray } from "serializr";
+import UiStore from "./UiStore";
 
 
 export class ProfileStore {
@@ -8,14 +9,21 @@ export class ProfileStore {
 	@serializable(primitive())
 	name: string;
 
-	@observable
-	@serializable(list(object(Account)))
-	accounts: Account[];
+	@serializable(mapAsArray(object(Account), "id"))
+	accounts: ObservableMap;
 
-	constructor(name: string, accounts: Account[]) {
+	constructor(name: string, accounts: Map<string, Account>, private us: UiStore) {
 		this.name = name;
-		this.accounts= accounts;
+		this.accounts = new ObservableMap(accounts);
 		this.export = this.export.bind(this);
+	}
+
+	validate(other: ProfileStore): boolean {
+		if ((typeof other.name) !== "string") return false;
+		for (let k of Array.from(other.accounts.keys())) {
+			if (k === undefined) return false;
+		}
+		return true;
 	}
 
 	load(file: File, callBack: (success: boolean) => any = (_: boolean) => ({})): boolean {
@@ -24,14 +32,18 @@ export class ProfileStore {
 			reader.abort();
 			callBack(false);
 		}
-		reader.onload = e => {
+		reader.onload = _ => {
 			try {
 				const other = deserialize(ProfileStore, JSON.parse(reader.result as string) as Object);
-				this.name = other.name;
-				this.accounts = other.accounts;
-				console.log(other);
-				callBack(true);
-			} catch (e) {
+				if (this.validate(other)) {
+					this.us.reset();
+					this.name = other.name;
+					this.accounts.replace(other.accounts);
+					callBack(true);
+				} else {
+					callBack(false);
+				}
+			} catch (ex) {
 				callBack(false);
 			}
 		}

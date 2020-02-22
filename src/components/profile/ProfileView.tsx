@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import { Popover, Button, Icon } from "antd";
-import RootStore from "../stores/RootStore";
+import RootStore from "../../stores/RootStore";
 
 
 @observer
@@ -54,15 +54,13 @@ export default class ProfileView extends Component<{rs: RootStore}> {
 			trigger="click"
 			visible={this.props.rs.us.profileVisible}
 			onVisibleChange={v => this.props.rs.us.profileVisible = v}
-			placement="topLeft"
+			placement="top"
 			title="Profile Settings"
 		>
-			<div onClick={() => this.props.rs.us.profileVisible = true}>
-				<Button>
-					<Icon type="profile"></Icon>
-					Profile - {this.props.rs.ps.name}
-				</Button>
-			</div>
+			<Button onClick={() => this.props.rs.us.profileVisible = true}>
+				<Icon type="profile"></Icon>
+				Profile - {this.props.rs.ps.name}
+			</Button>
 		</Popover>
 	}
 }

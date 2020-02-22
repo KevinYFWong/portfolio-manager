@@ -1,4 +1,4 @@
-import RootStore from "../stores/RootStore";
+import RootStore from "../../stores/RootStore";
 import React, { Component } from "react";
 import { Modal, Form, Input } from "antd";
 import { FormComponentProps } from "antd/lib/form";
@@ -27,6 +27,7 @@ class EditProfileModal extends Component<Props & FormComponentProps> {
 				<Form.Item label="Profile Name">
 					{ getFieldDecorator("name", {
 						rules: [{ required: true, message: "Input profile name"}],
+						initialValue: `${this.props.rs.ps.name}`
 					})(<Input/>)}
 				</Form.Item>
 			</Form>
