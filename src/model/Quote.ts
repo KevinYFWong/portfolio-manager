@@ -1,14 +1,22 @@
 import { Ticker } from "./Ticker";
 import { observable } from "mobx";
 
+export enum QuoteStatus {
+	UserSpecified,
+	Fetching,
+	Filled,
+	Unfilled
+}
 
 export default class Quote {
-	// todo: add filling status for quote
+
 	readonly ticker: Ticker;
 	@observable price: number | undefined;
+	@observable status: QuoteStatus;
 
-	constructor(ticker: Ticker, price?: number) {
+	constructor(ticker: Ticker, status: QuoteStatus, price?: number) {
 		this.ticker = ticker;
+		this.status = status;
 		this.price = price;
 	}
 

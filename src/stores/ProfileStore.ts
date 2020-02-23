@@ -1,7 +1,8 @@
-import { observable, ObservableMap } from "mobx";
+import { observable, ObservableMap, computed } from "mobx";
 import { Account } from "../model/Account";
-import { serialize, object, primitive, deserialize, serializable, mapAsArray } from "serializr";
+import { serialize, object, primitive, deserialize, serializable, mapAsArray, map } from "serializr";
 import UiStore from "./UiStore";
+import { Ticker } from "../model/Ticker";
 
 
 export class ProfileStore {
@@ -12,10 +13,14 @@ export class ProfileStore {
 	@serializable(mapAsArray(object(Account), "id"))
 	accounts: ObservableMap;
 
-	constructor(name: string, accounts: Map<string, Account>, private us: UiStore) {
+	@serializable(map(primitive()))
+	categories: ObservableMap;
+
+	constructor(name: string, accounts: Map<string, Account>, categories: Map<string, string>, private us: UiStore) {
 		this.name = name;
 		this.accounts = new ObservableMap(accounts);
 		this.export = this.export.bind(this);
+		this.categories = new ObservableMap(categories);
 	}
 
 	validate(other: ProfileStore): boolean {
@@ -39,6 +44,7 @@ export class ProfileStore {
 					this.us.reset();
 					this.name = other.name;
 					this.accounts.replace(other.accounts);
+					this.categories.replace(other.categories);
 					callBack(true);
 				} else {
 					callBack(false);
@@ -58,5 +64,21 @@ export class ProfileStore {
 		} catch (e) {
 			return undefined;
 		}
+	}
+
+	@computed get tickers(): Set<string> {
+		const result = new Set<string>();
+		for (const acc of Array.from(this.accounts.values()) as Account[]) {
+			for (const t of acc.transactions) {
+				result.add(t.ticker.asString);
+			}
+		}
+		return result;
+	}
+
+	getCategory(ticker: Ticker): string {
+		const tickString = ticker.asString;
+		if (!this.categories.has(tickString)) this.categories.set(tickString, "");
+		return this.categories.get(tickString) as string;
 	}
 }

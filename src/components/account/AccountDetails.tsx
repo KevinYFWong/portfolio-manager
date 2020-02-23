@@ -41,7 +41,7 @@ export default class AccountDetails extends Component<{rs: RootStore}> {
 					e.stopPropagation();
 				}}
 			/>;
-			return <div>
+			return <div style={{textAlign: "left"}}>
 				<Descriptions
 					title={
 						<span>

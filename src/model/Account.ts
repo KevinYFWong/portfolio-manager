@@ -14,12 +14,22 @@ export class Account {
 	@serializable(primitive()) readonly id: string;
 
 	@computed get currentValue(): number {
-		return this.transactions.reduce((acc: number, t: Transaction) => t.value + acc, 0);
+		return this.transactions.reduce((acc: number, t: Transaction) => t.currentValue + acc, 0);
 	}
 
 	@computed get bookValue(): number {
-		return this.transactions.reduce((acc, t) => acc + t.value, 0);
+		return this.transactions.reduce((acc, t) => acc + t.bookCost, 0);
 	}
+
+	@computed get principal(): number {
+		return this.transfers.reduce((acc, t) => acc + t.value, 0);
+	}
+
+	// @computed get tickers(): Set<string> {
+	// 	return this.transactions.reduce(
+	// 		(acc, t) => acc.add(t.ticker.asString), new Set<string>()
+	// 	);
+	// }
 
 	constructor(name: string, transactions: Transaction[], transfers: Transfer[], balance: number, id: string) {
 		this.name = name;

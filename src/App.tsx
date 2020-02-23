@@ -41,8 +41,8 @@ let accMap: Map<string, Account> = new Map<string, Account>();
 accs.forEach(a => accMap.set(a.id, a));
 
 let us = new UiStore();
-let ps = new ProfileStore("My Portfolio", accMap, us);
-let rs = new RootStore(ps, us, new QuoteStore());
+let ps = new ProfileStore("My Portfolio", accMap, new Map<string, string>(), us);
+let rs = new RootStore(ps, us, QuoteStore.getInstance());
 
 
 const App = () => {
@@ -56,6 +56,7 @@ const App = () => {
 						<Col>
 							<div style={{ margin: "0 10px" }}>
 								Account: <AccountSelector rs={rs} />
+								{/* <SecuritiesInfo rs={rs}/> */}
 							</div>
 						</Col>
 					</Row>
