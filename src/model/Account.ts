@@ -10,7 +10,7 @@ export class Account {
 	@observable @serializable(list(object(Transaction))) transactions: Transaction[];
 	@serializable(list(object(Transfer))) transfers: IObservableArray<Transfer>;
 	@observable @serializable(primitive()) balance: number = 0;
-	@observable @serializable(list(object(AssetAllocation))) assetAllocation: AssetAllocation[] = [];
+	@observable @serializable(list(object(AssetAllocation))) assetAllocation: AssetAllocation[];
 	@serializable(primitive()) readonly id: string;
 
 	@computed get currentValue(): number {
@@ -31,12 +31,13 @@ export class Account {
 	// 	);
 	// }
 
-	constructor(name: string, transactions: Transaction[], transfers: Transfer[], balance: number, id: string) {
+	constructor(name: string, transactions: Transaction[], transfers: Transfer[], assetAllocation: AssetAllocation[], balance: number, id: string) {
 		this.name = name;
 		this.transactions = transactions;
 		this.transfers = observable.array<Transfer>(transfers);
 		this.balance = balance;
 		this.id = id;
+		this.assetAllocation = assetAllocation;
 	}
 
 	sortTransfers() {

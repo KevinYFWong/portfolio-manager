@@ -34,7 +34,7 @@ class EditAccountModal extends Component<Props & FormComponentProps> {
 		const name = this.props.form.getFieldValue("name");
 		const balance = this.props.form.getFieldValue("balance");
 		if (this.props.rs.us.creatingAccount) {
-			let acc = new Account(name, [], [], balance, shortid.generate());
+			let acc = new Account(name, [], [], [], balance, shortid.generate());
 			this.props.rs.ps.accounts.set(acc.id, acc);
 			us.selectedAccount = acc.id;
 		} else {

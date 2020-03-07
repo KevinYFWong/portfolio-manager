@@ -48,13 +48,13 @@ class EditTransferModal extends Component<Props & FormComponentProps> {
 		acc.sortTransfers();
 	}
 
-	prepNewAccount() {
+	prepNew() {
 		this.action = "Create";
 		this.value = 0;
 		this.date = moment();
 	}
 
-	prepEditAccount() {
+	prepEdit() {
 		this.action = "Edit";
 		const t = this.props.rs.us.currentTransfer as Transfer;
 		this.value = t.value;
@@ -65,9 +65,9 @@ class EditTransferModal extends Component<Props & FormComponentProps> {
 		const us = this.props.rs.us;
 		const { getFieldDecorator } = this.props.form;
 		if (us.currentTransfer) {
-			this.prepEditAccount();
+			this.prepEdit();
 		} else {
-			this.prepNewAccount();
+			this.prepNew();
 		}
 		return <Modal
 			centered

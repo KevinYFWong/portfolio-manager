@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import RootStore from "../stores/RootStore";
-import { Button, Popover, List, Empty, Table } from "antd";
+import { Button, Table } from "antd";
 import React from "react";
 import { Ticker } from "../model/Ticker";
 import Quote from "../model/Quote";
@@ -8,7 +8,6 @@ import Quote from "../model/Quote";
 
 
 export const SecuritiesInfo = observer((props: {rs: RootStore}) => {
-	const us = props.rs.us;
 	const qs = props.rs.qs;
 	const ps = props.rs.ps;
 	const data = Array.from(props.rs.ps.tickers).map((tickString: string) => {
@@ -34,13 +33,12 @@ export const SecuritiesInfo = observer((props: {rs: RootStore}) => {
 			title="Category"
 			dataIndex="category"
 		/>
+		<Table.Column
+			title=""
+			dataIndex="ticker"
+			render={(t: Ticker) => <Button
+				icon="edit"
+			/>}
+		/>
 	</Table>
-	// return <List bordered={false}>
-	// 	{Array.from(props.rs.ps.tickers).map((tick: string) => {
-	// 		const q = props.rs.qs.getQuote(Ticker.fromString(tick));
-	// 		return <List.Item key={tick}>
-	// 			{tick}: {q.price}, {q.status}
-	// 		</List.Item>
-	// 	})}
-	// </List>
 });

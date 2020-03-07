@@ -5,6 +5,7 @@ import { Descriptions, Icon, Empty, Button, Collapse, Popconfirm } from "antd";
 import { Account } from "../../model/Account";
 import { TransferList } from "../transfer/TransferList";
 import { TransactionList } from "../transaction/TransactionList";
+import { AssetAllocationList } from "../assetallocation/AssetAllocationList";
 
 
 @observer
@@ -21,6 +22,7 @@ export default class AccountDetails extends Component<{rs: RootStore}> {
 				us.selectedAccount = "";
 				this.props.rs.ps.accounts.delete(acc.id);
 			}
+			// add buttons
 			const addTransfer = <Icon
 				style={{fontSize:20}}
 				type="plus-square"
@@ -38,6 +40,16 @@ export default class AccountDetails extends Component<{rs: RootStore}> {
 				twoToneColor="#65c765"
 				onClick={(e) => {
 					us.editTransactionModalVisible = true;
+					e.stopPropagation();
+				}}
+			/>;
+			const addAA = <Icon
+				style={{fontSize:20}}
+				type="plus-square"
+				theme="twoTone"
+				twoToneColor="#65c765"
+				onClick={(e) => {
+					us.editAAModalVisible = true;
 					e.stopPropagation();
 				}}
 			/>;
@@ -72,7 +84,9 @@ export default class AccountDetails extends Component<{rs: RootStore}> {
 					<Collapse.Panel header="Transactions" key="transactions" extra={addTransaction}>
 						<TransactionList rs={this.props.rs}/>
 					</Collapse.Panel>
-					<Collapse.Panel header="Asset Allocation" key="aa">asset allocations</Collapse.Panel>
+					<Collapse.Panel header="Asset Allocation" key="aa" extra={addAA}>
+						<AssetAllocationList rs={this.props.rs}/>
+					</Collapse.Panel>
 				</Collapse>
 			</div>;
 		}

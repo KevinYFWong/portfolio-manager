@@ -3,7 +3,7 @@ import './App.css';
 import { Transaction } from './model/Transaction';
 import { Ticker } from './model/Ticker';
 import { Account } from './model/Account';
-import { Layout, Row, Col } from 'antd';
+import { Layout, Row, Col, message } from 'antd';
 import Header from './components/Header';
 import { ProfileStore } from './stores/ProfileStore';
 import RootStore from './stores/RootStore';
@@ -20,6 +20,8 @@ import shortid from 'shortid';
 import Transfer from './model/Transfer';
 import EditTransferModal from './components/transfer/EditTransferModal';
 import EditTransactionModal from './components/transaction/EditTransactionModal';
+import AssetAllocation from './model/AssetAllocation';
+import EditAssetAllocationModal from './components/assetallocation/EditAssetAllocationModal';
 const { Content, Footer } = Layout;
 
 
@@ -33,8 +35,12 @@ let tfs = [
 	new Transfer(-323, new Date(), shortid.generate())
 ];
 
+let aas = [
+	new AssetAllocation(new Ticker("TSX", "XAW"), 1)
+];
+
 let accs: Account[] = [
-	new Account("WealthSimple TFSA", tl, tfs, 1240.32, shortid.generate())
+	new Account("WealthSimple TFSA", tl, tfs, aas, 1240.32, shortid.generate())
 ];
 
 let accMap: Map<string, Account> = new Map<string, Account>();
@@ -43,7 +49,9 @@ accs.forEach(a => accMap.set(a.id, a));
 let us = new UiStore();
 let ps = new ProfileStore("My Portfolio", accMap, new Map<string, string>(), us);
 let rs = new RootStore(ps, us, QuoteStore.getInstance());
-
+message.config({
+	top: 70
+});
 
 const App = () => {
 	return (
@@ -56,7 +64,6 @@ const App = () => {
 						<Col>
 							<div style={{ margin: "0 10px" }}>
 								Account: <AccountSelector rs={rs} />
-								{/* <SecuritiesInfo rs={rs}/> */}
 							</div>
 						</Col>
 					</Row>
@@ -74,6 +81,7 @@ const App = () => {
 			<EditAccountModal rs={rs}/>
 			<EditTransferModal rs={rs}/>
 			<EditTransactionModal rs={rs}/>
+			<EditAssetAllocationModal rs={rs}/>
 		</div>
 	);
 }

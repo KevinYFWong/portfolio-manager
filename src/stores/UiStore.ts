@@ -1,6 +1,7 @@
 import { observable } from "mobx";
 import Transfer from "../model/Transfer";
 import { Transaction } from "../model/Transaction";
+import AssetAllocation from "../model/AssetAllocation";
 
 
 export default class UiStore {
@@ -26,10 +27,14 @@ export default class UiStore {
 	@observable editTransactionModalVisible: boolean = false;
 	@observable currentTransaction?: Transaction = undefined;
 
+	@observable editAAModalVisible: boolean = false;
+	@observable currentAssetAllocation?: AssetAllocation = undefined;
+
 	reset() {
 		this.selectedAccount = "";
 		this.loading = false;
 		this.currentTransfer = undefined;
 		this.currentTransaction = undefined;
+		this.currentAssetAllocation = undefined;
 	}
 }

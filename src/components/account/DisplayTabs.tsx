@@ -34,7 +34,7 @@ export const DisplayTabs = observer((props: {rs: RootStore}) => {
 		<Tabs.TabPane tab={
 			<span>
 				<Icon type="info-circle"/>
-				Details
+				Securities Info
 			</span>}
 			key="sec-info"
 		>
