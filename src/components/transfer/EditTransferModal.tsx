@@ -45,6 +45,7 @@ class EditTransferModal extends Component<Props & FormComponentProps> {
 			}
 		}
 		this.onCancel();
+		console.log(acc);
 		acc.sortTransfers();
 	}
 

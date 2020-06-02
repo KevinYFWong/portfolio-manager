@@ -1,20 +1,41 @@
 import { Transaction } from "./Transaction";
-import { computed, observable, IObservableArray } from "mobx";
+import { computed, observable, IObservableArray, isObservableArray } from "mobx";
 import AssetAllocation from "./AssetAllocation";
 import Transfer from "./Transfer";
 import { primitive, list, object, serializable } from "serializr";
+import { Ticker } from "./Ticker";
+import QuoteStore from "../stores/QuoteStore";
+import { QuoteStatus } from "./Quote";
 
 
 export class Account {
 	@observable @serializable(primitive()) name: string = "";
 	@observable @serializable(list(object(Transaction))) transactions: Transaction[];
-	@serializable(list(object(Transfer))) transfers: IObservableArray<Transfer>;
+	@observable @serializable(list(object(Transfer))) transfers: IObservableArray<Transfer>;
 	@observable @serializable(primitive()) balance: number = 0;
 	@observable @serializable(list(object(AssetAllocation))) assetAllocation: AssetAllocation[];
 	@serializable(primitive()) readonly id: string;
 
+	@computed get assets(): Map<string, number> {
+		let result = new Map<string, number>();
+		this.transactions.forEach(t => {
+			const tickString = t.ticker.asString;
+			const currQty = result.get(tickString) ? result.get(tickString) as number : 0;
+			result.set(tickString, currQty + t.quantity);
+		});
+		return result;
+	}
+
 	@computed get currentValue(): number {
-		return this.transactions.reduce((acc: number, t: Transaction) => t.currentValue + acc, 0);
+		let assetTotal = 0;
+		const qs = QuoteStore.getInstance();
+		this.assets.forEach((qty, tick) => {
+			const quote = qs.getQuote(Ticker.fromString(tick));
+			if (quote.status !== QuoteStatus.Unfilled && quote.status !== QuoteStatus.Fetching && quote.price !== undefined) {
+				assetTotal += quote.price * qty;
+			}
+		});
+		return assetTotal + this.balance;
 	}
 
 	@computed get bookValue(): number {
@@ -24,12 +45,6 @@ export class Account {
 	@computed get principal(): number {
 		return this.transfers.reduce((acc, t) => acc + t.value, 0);
 	}
-
-	// @computed get tickers(): Set<string> {
-	// 	return this.transactions.reduce(
-	// 		(acc, t) => acc.add(t.ticker.asString), new Set<string>()
-	// 	);
-	// }
 
 	constructor(name: string, transactions: Transaction[], transfers: Transfer[], assetAllocation: AssetAllocation[], balance: number, id: string) {
 		this.name = name;
@@ -41,8 +56,9 @@ export class Account {
 	}
 
 	sortTransfers() {
-		this.transfers.replace(this.transfers.slice().sort(
+		console.log(isObservableArray(this.transfers));
+		this.transfers.slice().sort(
 			(a: Transfer, b: Transfer) => a.date.getTime() - b.date.getTime()
-		));
+		);
 	}
 }

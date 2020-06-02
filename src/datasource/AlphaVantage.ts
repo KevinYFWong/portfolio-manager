@@ -15,7 +15,7 @@ export default class AlphaVantage implements DataSource {
 	async getPrice(ticker: Ticker): Promise<number | undefined> {
 		try {
 			const response = await axios.get(this.quoteURL(ticker));
-			return response.data["Global Quote"]["05. price"];
+			return Number(response.data["Global Quote"]["05. price"]);
 		} catch (e) {
 			console.log(e);
 		}

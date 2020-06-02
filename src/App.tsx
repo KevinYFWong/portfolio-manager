@@ -36,7 +36,11 @@ let tfs = [
 ];
 
 let aas = [
-	new AssetAllocation(new Ticker("TSX", "XAW"), 1)
+	new AssetAllocation(new Ticker("TSX", "ZAG"), 0.1000),
+	new AssetAllocation(new Ticker("TSX", "VCN"), 0.2000),
+	new AssetAllocation(new Ticker("TSX", "XUU"), 0.3960),
+	new AssetAllocation(new Ticker("TSX", "XEF"), 0.2204),
+	new AssetAllocation(new Ticker("TSX", "XEC"), 0.0835)
 ];
 
 let accs: Account[] = [

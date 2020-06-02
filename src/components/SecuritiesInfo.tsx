@@ -18,7 +18,7 @@ export const SecuritiesInfo = observer((props: {rs: RootStore}) => {
 			category: ps.getCategory(t)
 		}
 	});
-	return <Table dataSource={data}>
+	return <Table dataSource={data} rowKey={r => r.ticker.asString}>
 		<Table.Column
 			title="Asset"
 			dataIndex="ticker"
@@ -39,6 +39,7 @@ export const SecuritiesInfo = observer((props: {rs: RootStore}) => {
 			render={(t: Ticker) => <Button
 				icon="edit"
 			/>}
+			key="edit"
 		/>
 	</Table>
 });
