@@ -16,8 +16,11 @@ export const AccountDashboard = observer((props: {rs: RootStore}) => {
 		const dollarReturn = acc.currentValue - acc.principal;
 		const pctReturn = dollarReturn / acc.principal * 100;
 		return <div>
+			<Statistic title="Principal" prefix="$" value={acc.principal} precision={2}/>
+			<Statistic title="Current Value" prefix="$" value={acc.currentValue} precision={2}/>
 			<Statistic title="Return" prefix="$" value={dollarReturn} precision={2}/>
 			<Statistic title="Return (%)" suffix="%" value={pctReturn} precision={2}/>
+			<Statistic title="Annual Return (%)" suffix="%" value={acc.xirr * 100} precision={2}/>
 		</div>
 	}
 });

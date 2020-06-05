@@ -1,12 +1,13 @@
 import { observable, computed } from "mobx"
 import { Ticker } from "./Ticker";
-import { object, primitive, serializable } from "serializr";
+import { object, primitive, date, serializable } from "serializr";
 import QuoteStore from "../stores/QuoteStore";
 import { QuoteStatus } from "./Quote";
 
 export class Transaction {
 	@observable @serializable(object(Ticker)) ticker: Ticker;
 	@observable @serializable(primitive()) quantity: number;
+	@observable @serializable(date()) date: Date;
 	@observable @serializable(primitive()) unitPrice: number;
 	@serializable(primitive()) readonly id: string;
 
@@ -23,10 +24,11 @@ export class Transaction {
 		return quote.price;
 	}
 
-	constructor(ticker: Ticker, quantity: number, price: number, id: string) {
+	constructor(ticker: Ticker, quantity: number, price: number, id: string, date: Date) {
 		this.ticker = ticker;
 		this.quantity = quantity;
 		this.unitPrice = price;
 		this.id = id;
+		this.date = date;
 	}
 }

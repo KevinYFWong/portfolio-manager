@@ -6,6 +6,7 @@ import { primitive, list, object, serializable } from "serializr";
 import { Ticker } from "./Ticker";
 import QuoteStore from "../stores/QuoteStore";
 import { QuoteStatus } from "./Quote";
+import { calculateXIRR } from "../util/XIRR";
 
 
 export class Account {
@@ -26,6 +27,7 @@ export class Account {
 		return result;
 	}
 
+	// todo: remove computed from this. should not be setting observables in here.
 	@computed get currentValue(): number {
 		let assetTotal = 0;
 		const qs = QuoteStore.getInstance();
@@ -44,6 +46,18 @@ export class Account {
 
 	@computed get principal(): number {
 		return this.transfers.reduce((acc, t) => acc + t.value, 0);
+	}
+
+	@computed get xirr(): number {
+		const trans: number[] = [];
+		const dates: Date[] = [];
+		this.transfers.forEach(t => {
+			trans.push(t.value);
+			dates.push(t.date);
+		});
+		trans.push(-this.currentValue);
+		dates.push(new Date());
+		return calculateXIRR(trans, dates);
 	}
 
 	constructor(name: string, transactions: Transaction[], transfers: Transfer[], assetAllocation: AssetAllocation[], balance: number, id: string) {

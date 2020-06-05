@@ -26,8 +26,6 @@ const { Content, Footer } = Layout;
 
 
 let tl: Transaction[] = [
-	new Transaction(new Ticker("TSX", "XAW"), 10, 30.13, shortid.generate()),
-	new Transaction(new Ticker("TSX", "XGRO"), 123, 25.64, shortid.generate())
 ];
 
 let tfs = [

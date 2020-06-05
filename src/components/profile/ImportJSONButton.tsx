@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, message } from "antd";
+import { Button, notification } from "antd";
 import FileModal from "./FileModal";
 import RootStore from "../../stores/RootStore";
 
@@ -23,9 +23,9 @@ export default class ImportJSONButton extends Component<Props, {}>{
 		this.props.rs.us.loading = true;
 		this.props.rs.ps.load(file, (success: boolean) => {
 			if (success) {
-				message.success("Successfully loaded profile.");
+				notification['success']({message: "Profile successfully loaded."});
 			} else {
-				message.error("Profile could not be loaded.");
+				notification['error']({message: "Profile could not be loaded."});
 			}
 			this.props.rs.us.loading = false;
 		});

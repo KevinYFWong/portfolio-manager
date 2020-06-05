@@ -1,6 +1,7 @@
 import RootStore from "../../stores/RootStore";
 import React, { Component } from "react";
-import { Modal, Form, InputNumber, Input } from "antd";
+import { Modal, Form, InputNumber, Input, DatePicker } from "antd";
+import moment, { Moment } from "moment";
 import { FormComponentProps } from "antd/lib/form";
 import { observer } from "mobx-react";
 import { Account } from "../../model/Account";
@@ -20,6 +21,7 @@ class EditTransactionModal extends Component<Props & FormComponentProps> {
 	private exchange: string = "";
 	private symbol: string = "";
 	private unitPrice: number = 0;
+	private date: Moment = moment();
 
 	constructor(props: Props & FormComponentProps) {
 		super(props);
@@ -40,17 +42,19 @@ class EditTransactionModal extends Component<Props & FormComponentProps> {
 		const exchange: string = form.getFieldValue("exchange");
 		const symbol: string = form.getFieldValue("symbol");
 		const unitPrice: number = form.getFieldValue("price");
+		const date = this.props.form.getFieldValue("date") as Moment;
 		if (this.props.rs.us.currentTransaction) {
 			const ct = this.props.rs.us.currentTransaction;
 			ct.quantity = quantity;
 			ct.ticker.exchange = exchange;
 			ct.ticker.symbol = symbol;
 			ct.unitPrice = unitPrice;
+			ct.date = date.toDate();
 		} else {
 			const acc = this.props.rs.ps.accounts.get(us.selectedAccount) as Account;
 			if (acc) {
 				const tick = new Ticker(exchange, symbol);
-				acc.transactions.push(new Transaction(tick, quantity, unitPrice, shortid.generate()));
+				acc.transactions.push(new Transaction(tick, quantity, unitPrice, shortid.generate(), date.toDate()));
 			}
 		}
 		this.onCancel();
@@ -62,6 +66,7 @@ class EditTransactionModal extends Component<Props & FormComponentProps> {
 		this.exchange = "";
 		this.symbol = "";
 		this.unitPrice = 0;
+		this.date = moment();
 	}
 
 	prepEditAccount() {
@@ -71,6 +76,7 @@ class EditTransactionModal extends Component<Props & FormComponentProps> {
 		this.exchange = t.ticker.exchange;
 		this.symbol = t.ticker.symbol;
 		this.unitPrice = t.unitPrice;
+		this.date = moment(t.date);
 	}
 
 	render() {
@@ -112,6 +118,12 @@ class EditTransactionModal extends Component<Props & FormComponentProps> {
 						rules: [{ required: true, message: "Input unit price"}],
 						initialValue: `${this.unitPrice}`
 					})(<InputNumber precision={2}/>)}
+				</Form.Item>
+				<Form.Item label="Date">
+					{ getFieldDecorator("date", {
+						rules: [{ required: true, message: "Input date"}],
+						initialValue: this.date
+					})(<DatePicker format="MMMM Do YYYY"/>)}
 				</Form.Item>
 			</Form>
 		</Modal>;
