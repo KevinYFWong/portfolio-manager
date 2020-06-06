@@ -9,7 +9,7 @@ const newtonsMethod = (initialGuess: number, f: (x: number) => number, fPrime: (
 	const nm = (prev: number, iterations: number): number => {
 		if (iterations === maxIterations || isNaN(prev) || !isFinite(prev)) return NaN;
 		const estimate = prev - f(prev) / fPrime(prev);
-		console.log("est: " + estimate + ", prev: " + prev + ", f: " + f(prev), ", f`: " + fPrime(prev));
+		// console.log("est: " + estimate + ", prev: " + prev + ", f: " + f(prev), ", f`: " + fPrime(prev));
 		if (Math.abs(estimate - prev) < tolerance) return estimate;
 		else return nm(estimate, iterations + 1);
 	}

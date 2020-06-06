@@ -1,7 +1,5 @@
 const solver = require("javascript-lp-solver/src/solver");
 
-const maxDelta = 0.01;
-
 type Op = "max" | "min";
 type Constraint = {
 	[key: string]: number
@@ -15,7 +13,7 @@ interface IModel {
 	ints: {[_:string]: number}
 };
 
-export const calculate = (ideals: number[], costs: number[], limit: number) => {
+export const balance = (ideals: number[], costs: number[], limit: number, maxDelta: number) => {
 	if (limit < 0) throw Error("Maximum total cost must not be negative");
 	if (ideals.length != costs.length) throw Error("Lists must be equal in size");
 	if (ideals.length == 0) throw Error("Lists must have at least one element");
@@ -24,7 +22,7 @@ export const calculate = (ideals: number[], costs: number[], limit: number) => {
 		optimize: "spend",
 		opType: "max",
 		constraints: {
-			"spend": { "max": limit }
+			"cost": { "max": limit }
 		},
 		variables: {},
 		ints: {}
@@ -33,13 +31,13 @@ export const calculate = (ideals: number[], costs: number[], limit: number) => {
 	const tolerance = limit * maxDelta;
 	ideals.forEach((units, i) => {
 		const cost = costs[i];
-		const label = `qty${i}`;
-		const minQty = Math.max(Math.ceil(units * cost - tolerance), 0);
-		model.constraints[label] = { "min": minQty };
-		model.variables[label] = { "spend": cost };
+		const attr = `qty${i}`;
+		const label = `${i}`;
+		const minQty = Math.max(Math.floor((units * cost - tolerance) / cost), 0);
+		model.constraints[attr] = { "min": minQty };
+		model.variables[label] = { "spend": cost, [attr]: 1, "cost": cost };
 		model.ints[label] = 1;
 	});
-
 	const result = solver.Solve(model);
-	console.log(result);
+	return result;
 }

@@ -5,6 +5,7 @@ import { Tabs, Icon } from "antd";
 import AccountDetails from "./AccountDetails";
 import { AccountDashboard } from "./AccountDashboard";
 import { SecuritiesInfo } from "../SecuritiesInfo";
+import AccountBalancer from "./AccountBalancer";
 
 
 export const DisplayTabs = observer((props: {rs: RootStore}) => {
@@ -47,7 +48,7 @@ export const DisplayTabs = observer((props: {rs: RootStore}) => {
 			</span>}
 			key="rebalance"
 		>
-			rebalance
+			<AccountBalancer rs={props.rs}/>
 		</Tabs.TabPane>
 	</Tabs>;
 });
