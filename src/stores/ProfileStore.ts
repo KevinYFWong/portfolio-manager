@@ -81,4 +81,8 @@ export class ProfileStore {
 		if (!this.categories.has(tickString)) this.categories.set(tickString, "");
 		return this.categories.get(tickString) as string;
 	}
+
+	setCategory(ticker: Ticker, category: string) {
+		this.categories.set(ticker.asString, category);
+	}
 }

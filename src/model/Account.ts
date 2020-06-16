@@ -27,8 +27,7 @@ export class Account {
 		return result;
 	}
 
-	// todo: remove computed from this. should not be setting observables in here.
-	@computed get currentValue(): number {
+	currentValue(): number {
 		let assetTotal = 0;
 		const qs = QuoteStore.getInstance();
 		this.assets.forEach((qty, tick) => {
@@ -55,7 +54,7 @@ export class Account {
 			trans.push(t.value);
 			dates.push(t.date);
 		});
-		trans.push(-this.currentValue);
+		trans.push(-this.currentValue());
 		dates.push(new Date());
 		return calculateXIRR(trans, dates);
 	}

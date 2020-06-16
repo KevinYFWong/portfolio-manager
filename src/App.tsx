@@ -1,7 +1,5 @@
 import React from 'react';
 import './App.css';
-import { Transaction } from './model/Transaction';
-import { Ticker } from './model/Ticker';
 import { Account } from './model/Account';
 import { Layout, Row, Col, message } from 'antd';
 import Header from './components/Header';
@@ -17,32 +15,14 @@ import EditAccountModal from './components/account/EditAccountModal';
 import AccountSelector from './components/account/AccountSelector';
 import { DisplayTabs } from './components/account/DisplayTabs';
 import shortid from 'shortid';
-import Transfer from './model/Transfer';
 import EditTransferModal from './components/transfer/EditTransferModal';
 import EditTransactionModal from './components/transaction/EditTransactionModal';
-import AssetAllocation from './model/AssetAllocation';
 import EditAssetAllocationModal from './components/assetallocation/EditAssetAllocationModal';
 const { Content, Footer } = Layout;
 
 
-let tl: Transaction[] = [
-];
-
-let tfs = [
-	new Transfer(30123, new Date(), shortid.generate()),
-	new Transfer(-323, new Date(), shortid.generate())
-];
-
-let aas = [
-	new AssetAllocation(new Ticker("TSX", "ZAG"), 0.1000),
-	new AssetAllocation(new Ticker("TSX", "VCN"), 0.2000),
-	new AssetAllocation(new Ticker("TSX", "XUU"), 0.3960),
-	new AssetAllocation(new Ticker("TSX", "XEF"), 0.2204),
-	new AssetAllocation(new Ticker("TSX", "XEC"), 0.0835)
-];
-
 let accs: Account[] = [
-	new Account("WealthSimple TFSA", tl, tfs, aas, 1240.32, shortid.generate())
+	new Account("Your Account", [], [], [], 0, shortid.generate())
 ];
 
 let accMap: Map<string, Account> = new Map<string, Account>();
