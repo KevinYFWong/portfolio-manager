@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { Account } from './model/Account';
-import { Layout, Row, Col, message } from 'antd';
+import { Layout, Row, Col, message, Button } from 'antd';
 import Header from './components/Header';
 import { ProfileStore } from './stores/ProfileStore';
 import RootStore from './stores/RootStore';
@@ -54,7 +54,9 @@ const App = () => {
 						<DisplayTabs rs={rs}/>
 					</div>
 				</Content>
-				<Footer>this is the footer</Footer>
+				<Footer>
+					<Button size="large" href="https://github.com/KevinYFWong/portfolio-manager" icon="github"/>
+				</Footer>
 			</Layout>
 			<StartModal rs={rs}/>
 			<LoadModal rs={rs}/>

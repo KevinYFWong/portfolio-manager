@@ -15,8 +15,8 @@ interface IModel {
 
 export const balance = (ideals: number[], costs: number[], limit: number, maxDelta: number) => {
 	if (limit < 0) throw Error("Maximum total cost must not be negative");
-	if (ideals.length != costs.length) throw Error("Lists must be equal in size");
-	if (ideals.length == 0) throw Error("Lists must have at least one element");
+	if (ideals.length !== costs.length) throw Error("Lists must be equal in size");
+	if (ideals.length === 0) throw Error("Lists must have at least one element");
 
 	let model: IModel = {
 		optimize: "spend",
@@ -38,6 +38,7 @@ export const balance = (ideals: number[], costs: number[], limit: number, maxDel
 		model.variables[label] = { "spend": cost, [attr]: 1, "cost": cost };
 		model.ints[label] = 1;
 	});
+	console.log(model);
 	const result = solver.Solve(model);
 	return result;
 }

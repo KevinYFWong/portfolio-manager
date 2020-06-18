@@ -22,7 +22,7 @@ export const AssetAllocationList = observer((props: {rs: RootStore}) => {
 		{
 			acc.assetAllocation.map((aa: AssetAllocation) => {
 				return <List.Item key={aa.ticker.asString} actions={[
-					<Button icon="edit" type="primary" onClick={clickHandler(aa)}>Edit</Button>
+					<Button size="large" icon="edit" type="primary" onClick={clickHandler(aa)}>Edit</Button>
 				]}>
 					<Statistic value={aa.ticker.asString}/>
 					<Statistic suffix="%" value={aa.portion * 100} precision={2}/>

@@ -9,9 +9,9 @@ import RootStore from "../stores/RootStore";
 export default class Header extends Component<{rs: RootStore}> {
 	render() {
 		return <Layout.Header>
-			<ProfileView
-				rs={this.props.rs}
-			></ProfileView>
+			<div>
+				<ProfileView rs={this.props.rs}/>
+			</div>
 		</Layout.Header>
 	}
 }
