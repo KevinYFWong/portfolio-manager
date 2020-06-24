@@ -21,7 +21,7 @@ export default class ImportJSONButton extends Component<Props, {}>{
 
 	handleFile(file: File) {
 		this.props.rs.us.loading = true;
-		this.props.rs.ps.load(file, (success: boolean) => {
+		this.props.rs.ps.loadFromFile(file, (success: boolean) => {
 			if (success) {
 				notification['success']({message: "Profile successfully loaded."});
 			} else {

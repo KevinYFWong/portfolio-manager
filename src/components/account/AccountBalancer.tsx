@@ -11,10 +11,6 @@ import { balance } from "../../util/Balancer";
 @observer
 export default class AccountBalancer extends Component<{rs: RootStore}> {
 	render() {
-		// grab asset list, merge with aa target list.
-		// warn if some prices could not be found.
-		// put all in to balancer, (0 aa for owned not on aa list)
-		// output list of transactions needed
 		const qs = QuoteStore.getInstance();
 		const us = this.props.rs.us;
 		if (us.selectedAccount === "") {

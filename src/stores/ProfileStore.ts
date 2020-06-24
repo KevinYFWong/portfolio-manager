@@ -31,30 +31,33 @@ export class ProfileStore {
 		return true;
 	}
 
-	load(file: File, callBack: (success: boolean) => any = (_: boolean) => ({})): boolean {
+	loadFromFile(file: File, callBack: (success: boolean) => any = (_: boolean) => ({})) {
 		const reader = new FileReader();
 		reader.onerror = e => {
 			reader.abort();
 			callBack(false);
 		}
 		reader.onload = _ => {
-			try {
-				const other = deserialize(ProfileStore, JSON.parse(reader.result as string) as Object);
-				if (this.validate(other)) {
-					this.us.reset();
-					this.name = other.name;
-					this.accounts.replace(other.accounts);
-					this.categories.replace(other.categories);
-					callBack(true);
-				} else {
-					callBack(false);
-				}
-			} catch (ex) {
-				callBack(false);
-			}
+			this.loadProfile(JSON.parse(reader.result as string) as Object, callBack);
 		}
 		reader.readAsText(file);
-		return false;
+	}
+
+	loadProfile(profileObject: Object, callBack: (success: boolean) => any = (_: boolean) => ({})) {
+		try {
+			const other = deserialize(ProfileStore, profileObject);
+			if (this.validate(other)) {
+				this.us.reset();
+				this.name = other.name;
+				this.accounts.replace(other.accounts);
+				this.categories.replace(other.categories);
+				callBack(true);
+			} else {
+				callBack(false);
+			}
+		} catch (ex) {
+			callBack(false);
+		}
 	}
 
 	export(): Object | undefined {
