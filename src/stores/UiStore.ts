@@ -30,11 +30,23 @@ export default class UiStore {
 	@observable editAAModalVisible: boolean = false;
 	@observable currentAssetAllocation?: AssetAllocation = undefined;
 
+	@observable
+	private visibilities: Map<string, boolean> = new Map();
+
 	reset() {
 		this.selectedAccount = "";
 		this.loading = false;
 		this.currentTransfer = undefined;
 		this.currentTransaction = undefined;
 		this.currentAssetAllocation = undefined;
+		this.visibilities.clear();
+	}
+
+	setComponentVisibility(key: string, value: boolean) {
+		this.visibilities.set(key, value);
+	}
+
+	componentVisible(key: string): boolean {
+		return this.visibilities.has(key) && this.visibilities.get(key) as boolean;
 	}
 }

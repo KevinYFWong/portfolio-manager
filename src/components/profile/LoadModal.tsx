@@ -19,5 +19,6 @@ export const LoadModal = observer((props: {rs: RootStore}) => (
 			rs={props.rs}
 			whenDone={() => props.rs.us.loadModalVisible = false}
 		/>
+
 	</Modal>
 ));
