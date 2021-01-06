@@ -13,7 +13,7 @@
     "@types/react-dom": "^16.9.5",
     "@types/shortid": "0.0.29",
     "antd": "^3.26.11",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "chart.js": "^2.9.3",
     "csstype": "^2.6.9",
     "javascript-lp-solver": "^0.4.24",
